@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/crudjdbcdb
+    username: root
+    password: Prudhvi@06
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  info:
+    app:
+      name: "Employee CRUD Application"
+      description: "This is a simple spring boot named parameter jdbc application that perform crud operations on employee table"
