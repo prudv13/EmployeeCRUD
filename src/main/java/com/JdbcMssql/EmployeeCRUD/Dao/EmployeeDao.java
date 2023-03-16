@@ -8,9 +8,9 @@ public interface EmployeeDao {
 
     public List<Employee> getAllEmployees();
     public Employee getEmployeeById(int id);
-    public Void insertNewEmployee(Employee employee);
-    public Void updateEmployeeById(int id, Employee employee);
+    public Employee insertNewEmployee(Employee employee);
+    public Employee updateEmployeeById(int id, Employee employee);
     public Employee updateEmployeeNameField(int id, Employee employee);
-    public Void deleteEmployee(int id);
+    public void deleteEmployee(int id);
 
 }

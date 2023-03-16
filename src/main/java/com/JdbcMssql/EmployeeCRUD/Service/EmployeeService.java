@@ -21,22 +21,19 @@ public class EmployeeService {
         return employeeDao.getEmployeeById(id);
     }
 
-    public Void insertNewEmployee(Employee employee) {
-        employeeDao.insertNewEmployee(employee);
-        return null;
+    public Employee insertNewEmployee(Employee employee) {
+        return employeeDao.insertNewEmployee(employee);
     }
 
-    public Void updateEmployeeById(int id, Employee employee){
-        employeeDao.updateEmployeeById(id, employee);
-        return null;
+    public Employee updateEmployeeById(int id, Employee employee){
+        return employeeDao.updateEmployeeById(id, employee);
     }
 
     public Employee updateEmployeeNameField(int id, Employee employee){
         return employeeDao.updateEmployeeNameField(id, employee);
     }
 
-    public Void deleteEmployee(int id){
+    public void deleteEmployee(int id){
         employeeDao.deleteEmployee(id);
-        return null;
     }
 }

@@ -35,17 +35,17 @@ public class EmployeeDaoImpl implements EmployeeDao{
     }
 
     @Override
-    public Void insertNewEmployee(Employee employee) {
+    public Employee insertNewEmployee(Employee employee) {
         String sql = "INSERT INTO Employee(name, email) VALUES(:name, :email)";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("name", employee.getName())
                 .addValue("email", employee.getEmail());
         namedParameterJdbcTemplate.update(sql, namedParameters);
-        return null;
+        return employee;
     }
 
     @Override
-    public Void updateEmployeeById(int id, Employee employee) {
+    public Employee updateEmployeeById(int id, Employee employee) {
         String sql = "UPDATE Employee SET name = :name, email = :email WHERE id = :id";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("id", employee.getId())
@@ -58,7 +58,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
         else{
             System.out.println("New record is not updated");
         }
-        return null;
+        return employee;
     }
 
     @Override
@@ -80,11 +80,10 @@ public class EmployeeDaoImpl implements EmployeeDao{
     }
 
     @Override
-    public Void deleteEmployee(int id) {
+    public void deleteEmployee(int id) {
         String sql = "DELETE FROM Employee WHERE id = :id";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("id", id);
         namedParameterJdbcTemplate.update(sql, namedParameters);
-        return null;
     }
 }

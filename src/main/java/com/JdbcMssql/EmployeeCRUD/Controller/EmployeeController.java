@@ -4,22 +4,24 @@ import com.JdbcMssql.EmployeeCRUD.DataModel.Employee;
 import com.JdbcMssql.EmployeeCRUD.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
 
     @PostMapping("/addemployee")
-    public ResponseEntity<Void> insertNewEmployee(@RequestBody Employee employee){
+    public ResponseEntity<Employee> insertNewEmployee(@RequestBody Employee employee){
         try{
-            Void newEmployee = employeeService.insertNewEmployee(employee);
-            return new ResponseEntity<Void>(newEmployee, HttpStatus.CREATED);
+            Employee newEmployee = employeeService.insertNewEmployee(employee);
+            return new ResponseEntity<Employee>(newEmployee, HttpStatus.CREATED);
         }
         catch(Exception exception){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -50,10 +52,10 @@ public class EmployeeController {
     }
 
     @PutMapping(value = "/employees/{id}")
-    public ResponseEntity<Void> updateEmployeeById(@PathVariable("id") int id, @RequestBody Employee employee){
+    public ResponseEntity<Employee> updateEmployeeById(@PathVariable("id") int id, @RequestBody Employee employee){
         try{
-            Void updateEmployee = employeeService.updateEmployeeById(id, employee);
-            return new ResponseEntity<Void>(updateEmployee, HttpStatus.ACCEPTED);
+            Employee updateEmployee = employeeService.updateEmployeeById(id, employee);
+            return new ResponseEntity<Employee>(updateEmployee, HttpStatus.ACCEPTED);
         }
         catch(Exception exception){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -72,13 +74,19 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable("id") int id){
-        try{
-            Void deleteEmployee = employeeService.deleteEmployee(id);
-            return new ResponseEntity<Void>(deleteEmployee, HttpStatus.OK);
+    public ResponseEntity<String> deleteEmployee(@PathVariable("id") int id){
+        Employee deletedEmployeeId = employeeService.getEmployeeById(id);
+        if(id > 0 && deletedEmployeeId != null){
+            try{
+                employeeService.deleteEmployee(id);
+            }
+            catch(Exception e){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource found, but cannot be deleted");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Deleted the Employee with provided ID");
         }
-        catch(Exception exception){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Provided ID is invalid");
         }
     }
 }
