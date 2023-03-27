@@ -1,8 +1,10 @@
 package com.JdbcMssql.EmployeeCRUD.Dao;
 
 import com.JdbcMssql.EmployeeCRUD.DataModel.Employee;
+import com.JdbcMssql.EmployeeCRUD.Dto.EmployeeDto;
 import com.JdbcMssql.EmployeeCRUD.ResultSetExtractor.EmployeeResultSetExtractor;
 import com.JdbcMssql.EmployeeCRUD.ResultSetExtractor.EmployeesListResultSetExtractor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,8 +19,21 @@ public class EmployeeDaoImpl implements EmployeeDao{
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Autowired
+    private ModelMapper mapper;
+
     public EmployeeDaoImpl(DataSource dataSource){
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    private EmployeeDto mapToDto(Employee employee){
+        EmployeeDto employeeDto = mapper.map(employee, EmployeeDto.class);
+        return employeeDto;
+    }
+
+    private Employee mapToEntity(EmployeeDto employeeDto){
+        Employee employee = mapper.map(employeeDto, Employee.class);
+        return employee;
     }
 
     @Override
