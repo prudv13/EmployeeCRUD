@@ -2,6 +2,7 @@ package com.JdbcMssql.EmployeeCRUD.Service;
 
 import com.JdbcMssql.EmployeeCRUD.Dao.EmployeeDaoImpl;
 import com.JdbcMssql.EmployeeCRUD.DataModel.Employee;
+import com.JdbcMssql.EmployeeCRUD.Dto.EmployeeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,11 @@ public class EmployeeService {
     @Autowired
     private EmployeeDaoImpl employeeDao;
 
-    public List<Employee> getAllEmployees(){
+    public List<EmployeeDto> getAllEmployees(){
         return employeeDao.getAllEmployees();
     }
 
-    public Employee getEmployeeById(int id){
+    public EmployeeDto getEmployeeById(int id){
         return employeeDao.getEmployeeById(id);
     }
 

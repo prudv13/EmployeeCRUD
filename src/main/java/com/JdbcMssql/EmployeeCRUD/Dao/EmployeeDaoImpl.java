@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -37,16 +38,25 @@ public class EmployeeDaoImpl implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeDto> getAllEmployees() {
         String sql = "SELECT id, name, email FROM Employee";
-        return namedParameterJdbcTemplate.query(sql, new EmployeesListResultSetExtractor());
+        List<Employee> employees = namedParameterJdbcTemplate.query(sql, new EmployeesListResultSetExtractor());
+
+        List<EmployeeDto> employeeDtos = new ArrayList<>();
+        for(Employee employee : employees){
+            EmployeeDto employeeDto = mapToDto(employee);
+            employeeDtos.add(employeeDto);
+        }
+        return employeeDtos;
     }
 
     @Override
-    public Employee getEmployeeById(int id) {
+    public EmployeeDto getEmployeeById(int id) {
         String sql = "SELECT id, name, email FROM Employee WHERE id = :id";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        return namedParameterJdbcTemplate.query(sql, namedParameters, new EmployeeResultSetExtractor());
+        Employee employee = namedParameterJdbcTemplate.query(sql, namedParameters, new EmployeeResultSetExtractor());
+        EmployeeDto employeeDto = mapToDto(employee);
+        return employeeDto;
     }
 
     @Override
@@ -100,5 +110,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("id", id);
         namedParameterJdbcTemplate.update(sql, namedParameters);
+
     }
 }

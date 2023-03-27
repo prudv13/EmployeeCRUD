@@ -1,6 +1,7 @@
 package com.JdbcMssql.EmployeeCRUD.Controller;
 
 import com.JdbcMssql.EmployeeCRUD.DataModel.Employee;
+import com.JdbcMssql.EmployeeCRUD.Dto.EmployeeDto;
 import com.JdbcMssql.EmployeeCRUD.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +31,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getAllEmployees(){
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees(){
         try{
-            List<Employee> employees = employeeService.getAllEmployees();
+            List<EmployeeDto> employees = employeeService.getAllEmployees();
             return new ResponseEntity<>(employees, HttpStatus.OK);
         }
         catch(Exception exception){
@@ -41,10 +42,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") int id){
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") int id){
         try{
-            Employee employee = employeeService.getEmployeeById(id);
-            return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+            EmployeeDto employee = employeeService.getEmployeeById(id);
+            return new ResponseEntity<EmployeeDto>(employee, HttpStatus.OK);
         }
         catch(Exception exception){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -75,7 +76,7 @@ public class EmployeeController {
 
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable("id") int id){
-        Employee deletedEmployeeId = employeeService.getEmployeeById(id);
+        EmployeeDto deletedEmployeeId = employeeService.getEmployeeById(id);
         if(id > 0 && deletedEmployeeId != null){
             try{
                 employeeService.deleteEmployee(id);
